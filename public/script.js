@@ -30,7 +30,12 @@
             try {
                 let res = await fetch(corsfuck + apiPath + `${id}`)
                 res = await res.json()
-                
+
+                if (!res.success) {
+                    log.innerText = `${id} failed: ${res.error}`;
+                    return "";
+                }
+
                 idPath = `https://rgl.gg/Public/PlayerProfile.aspx?p=${res.steamid}`
 
                 let table = `
@@ -48,63 +53,53 @@
                 </tr>`
 
                 res.experience.map((obj) => {
-
                     if (obj.category === "trad. sixes") {
                         return table += `<tr>
-                                    <td class="text-center">  
-                                        ${obj.season}
-                                    </td>
-                                    <td class="text-center">    
-                                        ${obj.div}
-                                    </td>    
-                                    <td class="text-center">      
-                                        ${obj.team}
-                                    </td>
-                                    <td class="text-center">
-                                        ${obj.endRank}
-                                    </td>  
-                                    <td class="text-center">
-                                        ${obj.recordWith}
-                                    </td>    
-                                    <td class="text-center"> 
-                                        ${obj.recordWithout}
-                                    </td>       
-                                    <td class="text-center">
-                                        ${obj.amountWon}
-                                    </td>      
-                                    <td class="text-center">
-                                        ${obj.joined}
-                                    </td> 
-                                    <td class="text-center">
-                                        ${obj.left}
-                                    </td>
-                               </tr>`
+                                <td class="text-center">  
+                                      ${obj.season}
+                                 </td>
+                                  <td class="text-center">    
+                                    ${obj.div}
+                                 </td>    
+                                 <td class="text-center">      
+                                     ${obj.team}
+                                 </td>
+                                 <td class="text-center">
+                                     ${obj.endRank}
+                                 </td>  
+                                 <td class="text-center">
+                                     ${obj.recordWith}
+                                 </td>    
+                                 <td class="text-center"> 
+                                     ${obj.recordWithout}
+                                 </td>       
+                                  <td class="text-center">
+                                      ${obj.amountWon}
+                                </td>      
+                                <td class="text-center">
+                                    ${obj.joined}
+                                </td> 
+                                 <td class="text-center">
+                                     ${obj.left}
+                                   </td>
+                              </tr>`
                     }
                     else return;
                 });
                 table += `</table>`
-                
 
                 let bpv = [];
                 if (res.banned) bpv.push("Banned")
                 if (res.probation) bpv.push("Probation")
                 if (res.verified) bpv.push("Verified")
 
-                if (!res.success) {
-                    log.innerText = `${id} failed: ${res.error}`;
-                    return "";
-                }
-
                 log.innerHTML = `<a href=${idPath} target="_blank">RGL Profile</a>
-            ${res.name}
-            ${bpv.join(", ")}
-            ${table}
-            
-            `
+                ${res.name}
+                ${bpv.join(", ")}
+                ${table}`
             } catch (e) {
                 log.innerText = `${id} FAILED- Failed to fetch`
             }
-
             return id;
         }))
 
