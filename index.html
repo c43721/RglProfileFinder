@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="public/styles.css">
+    <script defer src="public/script.js"></script>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+        integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <title>RGL API</title>
+</head>
+
+<body class="container">
+    <div class="header pt-5">RGL Profile Finder</div>
+    <div class="disclaimer pt-3">Input IDs here. Will refresh when clicked on again.</div>
+    <div class="search-box"><textarea id="input" rows="10"></textarea></div>
+
+    <p id="error" class="p-2"></p>
+    <button type="button" id="submit" class="btn btn-primary rounded">Search</button>
+    <div class="results pt-4" id="results"></div>
+</body>
+
+</html>
