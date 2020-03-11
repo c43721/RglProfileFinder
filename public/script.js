@@ -21,7 +21,6 @@
         const ids = [...inputElement.value.matchAll(re) || []].map(match => match[0]);
         isLoading = true;
         if (ids.length == 0) errorElement.innerText = `Need at least 1 ID to continue!`
-        console.log(ids);
 
         const lookup = await Promise.all(ids.map(async id => {
             const log = document.getElementById("results").appendChild(document.createElement("p"))
