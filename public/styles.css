@@ -1,0 +1,19 @@
+.container {
+    background-color: #c7dee7;
+}
+
+#input {
+    resize: none;
+    width: 100%;
+    background-color: rgb(245, 243, 239);
+}
+
+.header {
+    font-family: sans-serif;
+    font-size: 2rem;
+}
+
+.disclaimer {
+    font-size: 16px;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
