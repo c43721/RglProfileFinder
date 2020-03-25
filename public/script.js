@@ -24,10 +24,11 @@
 
         const lookup = await Promise.all(ids.map(async id => {
             const log = document.getElementById("results").appendChild(document.createElement("p"))
-            log.innerText = `${id} searching...`
+            log.innerText = `${id} waiting...`
 
             let idPath
             try {
+                log.innerText = `${id} searching...`
                 let res = await fetch(corsfuck + apiPath + `${id}`)
                 res = await res.json()
 
