@@ -1,0 +1,92 @@
+* {
+  box-sizing: border-box;
+  font-family: Roboto
+}
+
+body {
+  background-color: #CCC;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  margin: 0;
+}
+
+.title-header {
+  margin-top: 2rem;
+  font-size: 3rem;
+}
+
+.disclaimer {
+  margin-top: .5rem;
+  font-size: .75rem
+}
+
+.error {
+  color: red;
+}
+
+.search-box {
+  font-size: 1.1rem;
+  background-color: #DDD;
+  font-family: inherit;
+  line-height: 2;
+  margin-top: 2.5rem;
+  resize: vertical;
+  width: 75vw;
+  max-height: 35vh;
+  min-height: 15vh;
+}
+
+.search-box:hover,
+.search-box:focus {
+  outline: none;
+  border-color: hsl(200, 90%, 80%);
+  box-shadow: 0 0 20px hsl(200, 90%, 80%);
+}
+
+.btn {
+  outline: none;
+  cursor: pointer;
+  border-radius: .4em;
+  font-size: 1.25rem;
+  padding: .5em 1em;
+  border: 1px solid #777;
+  background-color: transparent;
+}
+
+.btn:hover,
+.btn:focus {
+  background-color: hsl(200, 90%, 80%);
+  box-shadow: 0 0 20px hsl(200, 90%, 80%);
+}
+
+.text-center {
+  text-align: center;
+}
+
+.table {
+  display: table;
+  border: 1px solid gray;
+  border-spacing: .4rem;
+}
+
+.table td {
+  padding-left: .4em;
+  padding-right: .4em;
+}
+
+.results {
+  margin-top: 1rem;
+}
+
+.flex-container {
+  display: flex;
+  justify-content: center;
+  align-content: center;
+}
+
+.bpv {
+  margin-left: .1em;
+  font-size: .75rem;
+}

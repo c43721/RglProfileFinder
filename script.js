@@ -56,30 +56,30 @@
                 res.experience.map((obj) => {
                     if (obj.category === "trad. sixes") {
                         return table += `<tr>
-                                <td class="text-center">  
+                                <td class="text-center">
                                       ${obj.season}
                                  </td>
-                                  <td class="text-center">    
+                                  <td class="text-center">
                                     ${obj.div}
-                                 </td>    
-                                 <td class="text-center">      
+                                 </td>
+                                 <td class="text-center">
                                      ${obj.team}
                                  </td>
                                  <td class="text-center">
                                      ${obj.endRank}
-                                 </td>  
+                                 </td>
                                  <td class="text-center">
                                      ${obj.recordWith}
-                                 </td>    
-                                 <td class="text-center"> 
+                                 </td>
+                                 <td class="text-center">
                                      ${obj.recordWithout}
-                                 </td>       
+                                 </td>
                                   <td class="text-center">
                                       ${obj.amountWon}
-                                </td>      
+                                </td>
                                 <td class="text-center">
                                     ${obj.joined}
-                                </td> 
+                                </td>
                                  <td class="text-center">
                                      ${obj.left}
                                    </td>
@@ -94,9 +94,8 @@
                 if (res.probation) bpv.push("Probation")
                 if (res.verified) bpv.push("Verified")
 
-                log.innerHTML = `<a href=${idPath} target="_blank">RGL Profile</a>
-                ${res.name}
-                ${bpv.join(", ")}
+                log.innerHTML = `<span class="text-center"><a href=${idPath} target="_blank">24</a>
+                 <span class="bpv">${bpv.join(", ")}</span></span>
                 ${table}`
             } catch (e) {
                 log.innerText = `${id} FAILED- Failed to fetch`
