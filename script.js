@@ -94,7 +94,7 @@
                 if (res.probation) bpv.push("Probation")
                 if (res.verified) bpv.push("Verified")
 
-                log.innerHTML = `<span class="text-center"><a href=${idPath} target="_blank">24</a>
+                log.innerHTML = `<span class="flex-container"><a href=${idPath} target="_blank">24</a>
                  <span class="bpv">${bpv.join(", ")}</span></span>
                 ${table}`
             } catch (e) {
