@@ -94,8 +94,8 @@
                 if (res.probation) bpv.push("Probation")
                 if (res.verified) bpv.push("Verified")
 
-                log.innerHTML = `<span class="flex-container"><a href=${idPath} target="_blank">24</a>
-                 <span class="bpv">${bpv.join(", ")}</span></span>
+                log.innerHTML = `<span class="flex-container"><a href=${idPath} target="_blank">${name}</a>
+                 <span id="bpv" class="bpv">${bpv.join(", ")}</span></span>
                 ${table}`
             } catch (e) {
                 log.innerText = `${id} FAILED- Failed to fetch`

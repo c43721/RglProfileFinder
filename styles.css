@@ -4,7 +4,7 @@
 }
 
 body {
-  background-color: #CCC;
+  background-color: #999;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -38,7 +38,7 @@ body {
 
 .search-box {
   font-size: 1.1rem;
-  background-color: #DDD;
+  background-color: #AAA;
   font-family: inherit;
   line-height: 2;
   margin-top: 2.5rem;
@@ -51,8 +51,8 @@ body {
 .search-box:hover,
 .search-box:focus {
   outline: none;
-  border-color: hsl(200, 90%, 80%);
-  box-shadow: 0 0 20px hsl(200, 90%, 80%);
+  border-color: #666;
+  box-shadow: 0 0 20px #666;
 }
 
 .btn {
@@ -67,8 +67,8 @@ body {
 
 .btn:hover,
 .btn:focus {
-  background-color: hsl(200, 90%, 80%);
-  box-shadow: 0 0 20px hsl(200, 90%, 80%);
+  background-color: #666;
+  box-shadow: 0 0 20px #666;
 }
 
 .text-center {
