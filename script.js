@@ -23,13 +23,13 @@
         if (ids.length == 0) errorElement.innerText = `Need at least 1 ID to continue!`
 
         const lookup = await Promise.all(ids.map(async id => {
-            const log = document.getElementById("results").appendChild(document.createElement("p"))
+            const log = document.getElementById("results").appendChild(document.createElement("p"));
 
             let idPath
             try {
                 log.innerText = `${id} searching...`
 
-                let res = await fetch(corsfuck + apiPath + `${id}`)
+                let res = await fetch(corsfuck + apiPath + id)
                 res = await res.json()
 
                 if (!res.success) {
@@ -94,9 +94,22 @@
                 if (res.probation) bpv.push("Probation")
                 if (res.verified) bpv.push("Verified")
 
-                log.innerHTML = `<span class="flex-container"><a href=${idPath} target="_blank">${name}</a>
-                 <span id="bpv" class="bpv">${bpv.join(", ")}</span></span>
+                log.innerHTML = `<span class="response flex-container"><a href=${idPath} target="_blank">${res.name}</a></span>
                 ${table}`
+
+                //For styling the icons.
+                const span = document.querySelectorAll('.response')
+
+                console.log(bpv)
+                span.forEach(item => {
+                    if (bpv.includes("Banned")) {
+                        item.classList.add("banned")
+                    } else if (bpv.includes("Probation")) {
+                        item.classList.add("probation")
+                    } else if (bpv.includes("Verified")) {
+                        item.classList.add("verified")
+                    }
+                })       
             } catch (e) {
                 log.innerText = `${id} FAILED- Failed to fetch`
             }

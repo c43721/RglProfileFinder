@@ -1,14 +1,22 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat&display=swap');
+
+:root {
+  --background-color: #666;
+  --background-select: #DDD;
+  --accent-color: #AAA;
+}
+
 * {
   box-sizing: border-box;
-  font-family: Roboto
 }
 
 body {
-  background-color: #999;
+  background-color: var(--background-color);
   display: flex;
   justify-content: center;
   align-items: center;
   flex-direction: column;
+  font-family: 'Montserrat', sans-serif;
   margin: 0;
 }
 
@@ -19,7 +27,7 @@ body {
 
 .disclaimer {
   margin-top: .5rem;
-  font-size: .75rem
+  font-size: 1rem
 }
 
 .error {
@@ -38,7 +46,7 @@ body {
 
 .search-box {
   font-size: 1.1rem;
-  background-color: #AAA;
+  background-color: var(--background-select);
   font-family: inherit;
   line-height: 2;
   margin-top: 2.5rem;
@@ -51,8 +59,8 @@ body {
 .search-box:hover,
 .search-box:focus {
   outline: none;
-  border-color: #666;
-  box-shadow: 0 0 20px #666;
+  border-color: var(--accent-color);
+  box-shadow: 0 0 15px var(--accent-color);
 }
 
 .btn {
@@ -61,14 +69,13 @@ body {
   border-radius: .4em;
   font-size: 1.25rem;
   padding: .5em 1em;
-  border: 1px solid #777;
-  background-color: transparent;
+  border: 1px solid var(--accent-color);
+  background-color: var(--background-select);
 }
 
 .btn:hover,
 .btn:focus {
-  background-color: #666;
-  box-shadow: 0 0 20px #666;
+  box-shadow: 0 0 15px var(--accent-color);
 }
 
 .text-center {
@@ -78,7 +85,7 @@ body {
 .table {
   margin-top: .5rem;
   display: table;
-  border: 1px solid gray;
+  border: 1px solid var(--accent-color);
   border-spacing: .4rem;
 }
 
@@ -91,10 +98,30 @@ body {
   display: flex;
   justify-content: center;
   align-content: center;
+  align-items: center;
 }
 
-.bpv {
-  font-style: italic;
-  margin-left: .1em;
-  font-size: .75rem;
+.flex-container.response {
+  font-size: 2rem;
+}
+
+.verified::before,
+.probation::before {
+  margin-right: .25rem;
+}
+
+.banned a,
+.banned {
+  text-decoration: line-through;
+  color: red;
+}
+
+.probation::before {
+  content: "!";
+  color: red;
+}
+
+.verified::before {
+  content: '✓';
+  color: orange;
 }
