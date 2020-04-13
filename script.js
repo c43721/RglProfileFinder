@@ -89,27 +89,21 @@
                 });
                 table += `</table>`
 
-                let bpv = [];
-                if (res.banned) bpv.push("Banned")
-                if (res.probation) bpv.push("Probation")
-                if (res.verified) bpv.push("Verified")
-
-                log.innerHTML = `<span class="response flex-container"><a href=${idPath} target="_blank">${res.name}</a></span>
-                ${table}`
-
-                //For styling the icons.
-                const span = document.querySelectorAll('.response')
-
-                console.log(bpv)
-                span.forEach(item => {
-                    if (bpv.includes("Banned")) {
-                        item.classList.add("banned")
-                    } else if (bpv.includes("Probation")) {
-                        item.classList.add("probation")
-                    } else if (bpv.includes("Verified")) {
-                        item.classList.add("verified")
-                    }
-                })       
+                if (res.banned) {
+                  log.innerHTML = `<span class="response flex-container banned"><a href=${idPath} target="_blank">${res.name}</a></span>
+                  ${table}`
+                }
+                else if (res.probation) {
+                  log.innerHTML = `<span class="response flex-container probation"><a href=${idPath} target="_blank">${res.name}</a></span>
+                  ${table}`
+                }
+                else if (res.verified){
+                  log.innerHTML = `<span class="response flex-container verified"><a href=${idPath} target="_blank">${res.name}</a></span>
+                  ${table}`
+                } else {
+                  log.innerHTML = `<span class="response flex-container"><a href=${idPath} target="_blank">${res.name}</a></span>
+                  ${table}`
+                }
             } catch (e) {
                 log.innerText = `${id} FAILED- Failed to fetch`
             }

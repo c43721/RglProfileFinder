@@ -84,9 +84,11 @@ body {
 
 .table {
   margin-top: .5rem;
-  display: table;
+  display: flex;
   border: 1px solid var(--accent-color);
   border-spacing: .4rem;
+  align-items: center;
+  justify-content: center;
 }
 
 .table td {
