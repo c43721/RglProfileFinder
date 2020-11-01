@@ -1,46 +1,43 @@
-(() => {
-    const inputElement = document.getElementById("input");
-    const errorElement = document.getElementById("error");
-    const searchBtn = document.getElementById("submit");
-    const results = document.getElementById("results")
-    const apiPath = `https://payload.tf/api/rgl/`
-    const re = /(765611\d+)|(STEAM_[01]\:[01]\:\d+)|(\[U\:[01]\:\d+\])/gi;
+const inputElement = document.getElementById("input");
+const errorElement = document.getElementById("error");
+const searchBtn = document.getElementById("submit");
+const results = document.getElementById("results");
+const apiPath = `https://payload.tf/api/rgl/`;
+const re = /(765611\d+)|(STEAM_[01]\:[01]\:\d+)|(\[U\:[01]\:\d+\])/gi;
 
-    let isLoading = false;
+let isLoading = false;
 
-    inputElement.addEventListener("click", () => {
-        errorElement.innerText = "";
-        if (results && isLoading === false) results.innerHTML = "";
-        else errorElement.innerText = "Please wait for the results to load before clearing."
-    })
+inputElement.addEventListener("click", () => {
+    errorElement.innerText = "";
+    if (results && isLoading === false) results.innerHTML = "";
+    else errorElement.innerText = "Please wait for the results to load before clearing."
+})
 
-    searchBtn.addEventListener("click", async ev => {
-        errorElement.innerText = "";
+searchBtn.addEventListener("click", async () => {
+    errorElement.innerText = "";
 
-        const ids = [...inputElement.value.matchAll(re) || []].map(match => match[0]);
-        isLoading = true;
-        if (ids.length == 0) errorElement.innerText = `Need at least 1 ID to continue!`
+    const ids = [...inputElement.value.matchAll(re) || []].map(match => match[0]);
+    isLoading = true;
+    if (ids.length == 0) errorElement.innerText = `Need at least 1 ID to continue!`;
 
-        const lookup = await Promise.all(ids.map(async id => {
-            const log = document.getElementById("results").appendChild(document.createElement("p"));
+    const lookUpResults = ids.map(async id => {
+        const log = document.getElementById("results").appendChild(document.createElement("p"));
 
-            let idPath
-            try {
-                log.innerText = `${id} searching...`
+        let idPath;
+        try {
+            log.innerText = `${id} searching...`;
 
-                let res = await fetch(apiPath + id)
-                res = await res.json()
+            let res = await fetch(apiPath + id);
+            res = await res.json();
 
-                if (res.error) {
-                    log.innerText = `${id} failed: ${res.error}`;
-                    return "";
-                }
+            if (res.error) {
+                log.innerText = `${id} failed: ${res.error}`;
+                return "";
+            }
 
-                console.log(res);
+            idPath = `https://rgl.gg/Public/PlayerProfile.aspx?p=${res.steamid}`;
 
-                idPath = `https://rgl.gg/Public/PlayerProfile.aspx?p=${res.steamid}`
-
-                let table = `
+            let table = `
                 <table class="table table-striped">
                     <tr>
                         <th class="text-center">Season</th>
@@ -54,9 +51,9 @@
                         <th class="text-center">Left</th>
                 </tr>`
 
-                res.experience.map((obj) => {
-                    if (obj.category === "trad. sixes") {
-                        return table += `<tr>
+            res.experience.map(obj => {
+                if (obj.category === "trad. sixes") {
+                    return table += `<tr>
                                 <td class="text-center">
                                       ${obj.season}
                                  </td>
@@ -85,33 +82,21 @@
                                      ${obj.left}
                                    </td>
                               </tr>`
-                    }
-                    else return;
-                });
-                table += `</table>`
+                }
+                else return;
+            });
+            table += `</table>`
 
-                if (res.bans.banned) {
-                    log.innerHTML = `<span class="response flex-container banned"><a href=${idPath} target="_blank">${res.name}</a></span>
-                  ${table}`
-                }
-                else if (res.bans.probation) {
-                    log.innerHTML = `<span class="response flex-container probation"><a href=${idPath} target="_blank">${res.name}</a></span>
-                  ${table}`
-                }
-                else if (res.bans.verified) {
-                    log.innerHTML = `<span class="response flex-container verified"><a href=${idPath} target="_blank">${res.name}</a></span>
-                  ${table}`
-                } else {
-                    log.innerHTML = `<span class="response flex-container"><a href=${idPath} target="_blank">${res.name}</a></span>
-                  ${table}`
-                }
-            } catch (e) {
-                log.innerText = `${id} FAILED- Failed to fetch`
+            for (let banType in res.bans) {
+                if (!res.bans[banType]) continue;
+                else log.innerHTML = `<span class="response flex-container ${banType}"><a href=${idPath} target="_blank">${res.name}</a></span> ${table}`;
             }
-            return id;
-        }))
 
-        lookup;
-        isLoading = false;
+        } catch (e) {
+            log.innerText = `${id} FAILED - Failed to fetch`
+        }
     })
-})();
+
+    await Promise.all(lookUpResults);
+    isLoading = false;
+})
