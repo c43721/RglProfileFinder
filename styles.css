@@ -34,7 +34,13 @@ body {
 }
 
 .results {
-  margin: 1.25rem;
+  margin-top: 1.25rem;
+  margin-bottom: 50px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  gap: 25px;
 }
 
 .results a {
