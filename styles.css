@@ -1,5 +1,4 @@
 @import url('https://fonts.googleapis.com/css2?family=Montserrat&display=swap');
-
 :root {
   --background-color: #666;
   --background-select: #DDD;
@@ -56,8 +55,7 @@ body {
   min-height: 15vh;
 }
 
-.search-box:hover,
-.search-box:focus {
+.search-box:hover, .search-box:focus {
   outline: none;
   border-color: var(--accent-color);
   box-shadow: 0 0 15px var(--accent-color);
@@ -73,8 +71,7 @@ body {
   background-color: var(--background-select);
 }
 
-.btn:hover,
-.btn:focus {
+.btn:hover, .btn:focus {
   box-shadow: 0 0 15px var(--accent-color);
 }
 
@@ -107,13 +104,11 @@ body {
   font-size: 2rem;
 }
 
-.verified::before,
-.probation::before {
+.verified::before, .probation::before {
   margin-right: .25rem;
 }
 
-.banned a,
-.banned {
+.banned a, .banned {
   text-decoration: line-through;
   color: red;
 }
@@ -126,4 +121,26 @@ body {
 .verified::before {
   content: '✓';
   color: orange;
+}
+
+.check-container {
+  margin-top: 25px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  position: relative;
+  user-select: none;
+}
+
+.check-container > label {
+  float: left;
+  text-align: right;
+}
+
+input[type=checkbox] {
+  cursor: pointer;
+  transform: scale(1.5);
+  padding: 10px;
+  margin: 7px;
 }

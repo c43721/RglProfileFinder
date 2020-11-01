@@ -13,11 +13,31 @@
 <body class="container">
     <div class="title-header">RGL Profile Finder</div>
     <div class="disclaimer">Input IDs here. Will refresh when clicked on again.</div>
-    <div class="disclaimer">Key: <span class="probation">Probation</span>, <span class="banned">Banned</span>, <span class="verified"></span>Verified.</div>
+    <div class="disclaimer">
+        Key: <span class="probation">Probation</span>,
+        <span class="banned">Banned</span>,
+        <span class="verified"></span>Verified.
+    </div>
+
+    <div class="check-container">
+        <label>6s
+            <input id="6s-check" value="trad. sixes" type="checkbox" checked>
+        </label>
+
+        <label>HL
+            <input id="hl-check" value="highlander" type="checkbox">
+        </label>
+
+        <label>Prolander
+            <input id="pl-check" value="prolander" type="checkbox">
+        </label>
+    </div>
+
 
     <div class="search-box-flex"><textarea class="search-box" id="input" rows="10"></textarea></div>
     <p id="error" class="error"></p>
     <button type="button" id="submit" class="btn">Search</button>
     <div class="results" id="results"></div>
 </body>
+
 </html>

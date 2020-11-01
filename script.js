@@ -5,6 +5,10 @@ const results = document.getElementById("results");
 const apiPath = `https://payload.tf/api/rgl/`;
 const re = /(765611\d+)|(STEAM_[01]\:[01]\:\d+)|(\[U\:[01]\:\d+\])/gi;
 
+const sixesChecked = document.getElementById("6s-check");
+const hlChecked = document.getElementById("hl-check");
+const plChecked = document.getElementById("pl-check");
+
 let isLoading = false;
 
 inputElement.addEventListener("click", () => {
@@ -21,7 +25,7 @@ searchBtn.addEventListener("click", async () => {
     if (ids.length == 0) errorElement.innerText = `Need at least 1 ID to continue!`;
 
     const lookUpResults = ids.map(async id => {
-        const log = document.getElementById("results").appendChild(document.createElement("p"));
+        const log = document.getElementById("results").appendChild(document.createElement("div"));
 
         let idPath;
         try {
@@ -51,49 +55,62 @@ searchBtn.addEventListener("click", async () => {
                         <th class="text-center">Left</th>
                 </tr>`
 
-            res.experience.map(obj => {
-                if (obj.category === "trad. sixes") {
-                    return table += `<tr>
-                                <td class="text-center">
-                                      ${obj.season}
-                                 </td>
-                                  <td class="text-center">
-                                    ${obj.div}
-                                 </td>
-                                 <td class="text-center">
-                                     ${obj.team}
-                                 </td>
-                                 <td class="text-center">
-                                     ${obj.endRank}
-                                 </td>
-                                 <td class="text-center">
-                                     ${obj.recordWith}
-                                 </td>
-                                 <td class="text-center">
-                                     ${obj.recordWithout}
-                                 </td>
-                                  <td class="text-center">
-                                      ${obj.amountWon}
-                                </td>
-                                <td class="text-center">
-                                    ${obj.joined}
-                                </td>
-                                 <td class="text-center">
-                                     ${obj.left}
-                                   </td>
-                              </tr>`
+            const categories = [sixesChecked, hlChecked, plChecked].map(element => {
+                return {
+                    checked: element.checked,
+                    type: element.value
                 }
-                else return;
             });
-            table += `</table>`
 
-            for (let banType in res.bans) {
-                if (!res.bans[banType]) continue;
-                else log.innerHTML = `<span class="response flex-container ${banType}"><a href=${idPath} target="_blank">${res.name}</a></span> ${table}`;
+            const categoryCheck = categories.every(category => category.checked === false);
+            if (categoryCheck) return log.innerText = `${id} failed: No checkboxes are checked.`;
+
+            for (const selectedCategory of categories) {
+                if (!selectedCategory.checked) continue;
+                res.experience.map(obj => {
+                    if (obj.category !== selectedCategory.type) return;
+                    return table += `<tr> 
+                                    <td class="text-center">
+                                        ${obj.season}
+                                     </td>
+                                      <td class="text-center">
+                                        ${obj.div}
+                                     </td>
+                                     <td class="text-center">
+                                         ${obj.team}
+                                     </td>
+                                     <td class="text-center">
+                                         ${obj.endRank}
+                                     </td>
+                                     <td class="text-center">
+                                         ${obj.recordWith}
+                                     </td>
+                                     <td class="text-center">
+                                         ${obj.recordWithout}
+                                     </td>
+                                      <td class="text-center">
+                                          ${obj.amountWon}
+                                    </td>
+                                    <td class="text-center">
+                                        ${obj.joined}
+                                    </td>
+                                     <td class="text-center">
+                                         ${obj.left}
+                                       </td>
+                                  </tr>`
+                });
             }
 
+
+            table += `</table>`
+
+            const bans = [];
+            for (let banType in res.bans)
+                if (res.bans[banType]) bans.push(banType);
+
+            log.innerHTML = `<span class="response flex-container ${bans.join(" ")}"><a href=${idPath} target="_blank">${res.name}</a></span> ${table}`;
         } catch (e) {
-            log.innerText = `${id} FAILED - Failed to fetch`
+            log.innerText = `${id} FAILED - Failed to fetch`;
         }
     })
 
