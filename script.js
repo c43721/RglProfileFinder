@@ -3,7 +3,6 @@
     const errorElement = document.getElementById("error");
     const searchBtn = document.getElementById("submit");
     const results = document.getElementById("results")
-    const corsfuck = `https://cors-anywhere.herokuapp.com/`
     const apiPath = `https://payload.tf/api/rgl/`
     const re = /(765611\d+)|(STEAM_[01]\:[01]\:\d+)|(\[U\:[01]\:\d+\])/gi;
 
@@ -29,13 +28,15 @@
             try {
                 log.innerText = `${id} searching...`
 
-                let res = await fetch(corsfuck + apiPath + id)
+                let res = await fetch(apiPath + id)
                 res = await res.json()
 
-                if (!res.success) {
+                if (res.error) {
                     log.innerText = `${id} failed: ${res.error}`;
                     return "";
                 }
+
+                console.log(res);
 
                 idPath = `https://rgl.gg/Public/PlayerProfile.aspx?p=${res.steamid}`
 
@@ -89,19 +90,19 @@
                 });
                 table += `</table>`
 
-                if (res.banned) {
-                  log.innerHTML = `<span class="response flex-container banned"><a href=${idPath} target="_blank">${res.name}</a></span>
+                if (res.bans.banned) {
+                    log.innerHTML = `<span class="response flex-container banned"><a href=${idPath} target="_blank">${res.name}</a></span>
                   ${table}`
                 }
-                else if (res.probation) {
-                  log.innerHTML = `<span class="response flex-container probation"><a href=${idPath} target="_blank">${res.name}</a></span>
+                else if (res.bans.probation) {
+                    log.innerHTML = `<span class="response flex-container probation"><a href=${idPath} target="_blank">${res.name}</a></span>
                   ${table}`
                 }
-                else if (res.verified){
-                  log.innerHTML = `<span class="response flex-container verified"><a href=${idPath} target="_blank">${res.name}</a></span>
+                else if (res.bans.verified) {
+                    log.innerHTML = `<span class="response flex-container verified"><a href=${idPath} target="_blank">${res.name}</a></span>
                   ${table}`
                 } else {
-                  log.innerHTML = `<span class="response flex-container"><a href=${idPath} target="_blank">${res.name}</a></span>
+                    log.innerHTML = `<span class="response flex-container"><a href=${idPath} target="_blank">${res.name}</a></span>
                   ${table}`
                 }
             } catch (e) {
