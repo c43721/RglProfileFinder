@@ -67,40 +67,39 @@ searchBtn.addEventListener("click", async () => {
 
             for (const selectedCategory of categories) {
                 if (!selectedCategory.checked) continue;
-                res.experience.map(obj => {
-                    if (obj.category !== selectedCategory.type) return;
+                const filteredExperience = res.experience.filter(division => division.category === selectedCategory.type);
+                filteredExperience.map(season => {
                     return table += `<tr> 
                                     <td class="text-center">
-                                        ${obj.season}
+                                        ${season.season}
                                      </td>
                                       <td class="text-center">
-                                        ${obj.div}
+                                        ${season.div}
                                      </td>
                                      <td class="text-center">
-                                         ${obj.team}
+                                         ${season.team}
                                      </td>
                                      <td class="text-center">
-                                         ${obj.endRank}
+                                         ${season.endRank}
                                      </td>
                                      <td class="text-center">
-                                         ${obj.recordWith}
+                                         ${season.recordWith}
                                      </td>
                                      <td class="text-center">
-                                         ${obj.recordWithout}
+                                         ${season.recordWithout}
                                      </td>
                                       <td class="text-center">
-                                          ${obj.amountWon}
+                                          ${season.amountWon}
                                     </td>
                                     <td class="text-center">
-                                        ${obj.joined}
+                                        ${season.joined}
                                     </td>
                                      <td class="text-center">
-                                         ${obj.left}
-                                       </td>
+                                         ${season.left}
+                                    </td>
                                   </tr>`
                 });
             }
-
 
             table += `</table>`
 
