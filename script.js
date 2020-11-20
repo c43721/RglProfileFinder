@@ -2,7 +2,7 @@ const inputElement = document.getElementById("input");
 const errorElement = document.getElementById("error");
 const searchBtn = document.getElementById("submit");
 const results = document.getElementById("results");
-const apiPath = `https://payload.tf/api/rgl/`;
+const apiPath = `https://payload.tf/api/external/rcon`;
 const re = /(765611\d+)|(STEAM_[01]\:[01]\:\d+)|(\[U\:[01]\:\d+\])/gi;
 
 const sixesChecked = document.getElementById("6s-check");
