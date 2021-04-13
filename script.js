@@ -2,7 +2,8 @@ const inputElement = document.getElementById("input");
 const errorElement = document.getElementById("error");
 const searchBtn = document.getElementById("submit");
 const results = document.getElementById("results");
-const apiPath = `https://payload.tf/api/external/rgl/`;
+const apiPath = `https://rgl.payload.tf/api/v1/profiles/`;
+// const apiPath = `http://localhost:8080/api/v1/profiles/`; 
 const re = /(765611\d+)|(STEAM_[01]\:[01]\:\d+)|(\[U\:[01]\:\d+\])/gi;
 
 const sixesChecked = document.getElementById("6s-check");
@@ -11,35 +12,38 @@ const plChecked = document.getElementById("pl-check");
 
 let isLoading = false;
 
-inputElement.addEventListener("click", () => {
-    errorElement.innerText = "";
-    if (results && isLoading === false) results.innerHTML = "";
-    else errorElement.innerText = "Please wait for the results to load before clearing."
-})
-
 searchBtn.addEventListener("click", async () => {
     errorElement.innerText = "";
+    results.innerText = "";
 
     const ids = [...inputElement.value.matchAll(re) || []].map(match => match[0]);
     isLoading = true;
     if (ids.length == 0) errorElement.innerText = `Need at least 1 ID to continue!`;
 
+    const categories = [sixesChecked, hlChecked, plChecked].map(element => {
+        return {
+            checked: element.checked,
+            type: element.value
+        }
+    });
+
+    const hasCategory = categories.some(category => category.checked === true);
+    if (!hasCategory) return log.innerText = `${id} failed: No checkboxes are checked.`;
+
     const lookUpResults = ids.map(async id => {
         const log = document.getElementById("results").appendChild(document.createElement("div"));
 
-        let idPath;
         try {
             log.innerText = `${id} searching...`;
 
-            let res = await fetch(apiPath + id);
-            res = await res.json();
+            const response = await fetch(apiPath + id + '?formats=' + categories.filter(c => c.checked).map(c => c.type).join(", "))
 
-            if (res.error) {
-                log.innerText = `${id} failed: ${res.error}`;
-                return "";
+            if (!response.ok) {
+                const { error } = await response.json();
+                return log.innerText = `${id} failed: ${error}`;
             }
 
-            idPath = `https://rgl.gg/Public/PlayerProfile.aspx?p=${res.steamid}`;
+            const  { data: { experience, ...profile} } = await response.json();
 
             let table = `
                 <table class="table table-striped">
@@ -55,59 +59,45 @@ searchBtn.addEventListener("click", async () => {
                         <th class="text-center">Left</th>
                 </tr>`
 
-            const categories = [sixesChecked, hlChecked, plChecked].map(element => {
-                return {
-                    checked: element.checked,
-                    type: element.value
-                }
+            experience.map(season => {
+                return table += `<tr> 
+                                <td class="text-center">
+                                    ${season.season}
+                                </td>
+                                <td class="text-center">
+                                    ${season.div}
+                                </td>
+                                <td class="text-center">
+                                    ${season.team}
+                                </td>
+                                <td class="text-center">
+                                    ${season.endRank}
+                                </td>
+                                <td class="text-center">
+                                    ${season.recordWith}
+                                </td>
+                                <td class="text-center">
+                                    ${season.recordWithout ?? "-"}
+                                </td>
+                                <td class="text-center">
+                                    ${season.amountWon ?? "0"}
+                                </td>
+                                <td class="text-center">
+                                    ${new Date(season.joined).toLocaleDateString("en-US")}
+                                </td>
+                                <td class="text-center">
+                                    ${new Date(season.left).toLocaleDateString("en-US")}
+                                </td>
+                                </tr>`
             });
-
-            const categoryCheck = categories.every(category => category.checked === false);
-            if (categoryCheck) return log.innerText = `${id} failed: No checkboxes are checked.`;
-
-            for (const selectedCategory of categories) {
-                if (!selectedCategory.checked) continue;
-                const filteredExperience = res.experience.filter(division => division.category === selectedCategory.type);
-                filteredExperience.map(season => {
-                    return table += `<tr> 
-                                    <td class="text-center">
-                                        ${season.season}
-                                     </td>
-                                      <td class="text-center">
-                                        ${season.div}
-                                     </td>
-                                     <td class="text-center">
-                                         ${season.team}
-                                     </td>
-                                     <td class="text-center">
-                                         ${season.endRank}
-                                     </td>
-                                     <td class="text-center">
-                                         ${season.recordWith}
-                                     </td>
-                                     <td class="text-center">
-                                         ${season.recordWithout}
-                                     </td>
-                                      <td class="text-center">
-                                          ${season.amountWon}
-                                    </td>
-                                    <td class="text-center">
-                                        ${season.joined}
-                                    </td>
-                                     <td class="text-center">
-                                         ${season.left}
-                                    </td>
-                                  </tr>`
-                });
-            }
 
             table += `</table>`
 
             const bans = [];
-            for (let banType in res.bans)
-                if (res.bans[banType]) bans.push(banType);
+            for (const banType in profile.status)
+                if (profile.status[banType]) bans.push(banType);
 
-            log.innerHTML = `<span class="response flex-container ${bans.join(" ")}"><a href=${idPath} target="_blank">${res.name}</a></span> ${table}`;
+            log.innerHTML = `<span class="response flex-container ${bans.join(" ")}"><a href=${profile.link} target="_blank">${profile.name}</a></span> ${table}`;
         } catch (e) {
             log.innerText = `${id} FAILED - Failed to fetch`;
         }
