@@ -39,8 +39,8 @@ searchBtn.addEventListener("click", async () => {
             const response = await fetch(apiPath + id + '?formats=' + categories.filter(c => c.checked).map(c => c.type).join(", "))
 
             if (!response.ok) {
-                const { error } = await response.json();
-                return log.innerText = `${id} failed: ${error}`;
+                const { data: { message } } = await response.json();
+                return log.innerText = `${id} failed: ${message}`;
             }
 
             const  { data: { experience, ...profile} } = await response.json();
